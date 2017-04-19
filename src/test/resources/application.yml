@@ -1,0 +1,49 @@
+server:
+  port: 9009
+  tomcat:
+    uri-encoding: UTF-8
+  address: 0.0.0.0
+  display-name: Owstoni
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  datasource:
+    url: "jdbc:mysql://201.201.201.173:3306/Owstoni?characterEncoding=utf8&useUnicode=true&useSSL=false"
+    username: developer
+    password: developerDev$$##22
+    test-while-idle: true
+    validation-query: "select 1"
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+      force-request: true
+      force-response: true
+  redis:
+    database: 4
+    host: 201.201.201.173
+    port: 6379
+    timeout: 5000
+    pool:
+      max-active: 64
+      max-idle: 8
+      max-wait: -1
+
+logging:
+  level: debug
+  path: logs
+
+bill:
+  defaultAuthenticationType: Signature
+  apiResponseAroundControllerPackagesExecution: "execution(* cn.gotoil.owstoni.web.controller.v1..*.*Action(..))"
+  keyOfHashCompareAuthenticationProviderClass: cn.gotoil.owstoni.classes.HashCompareAuthenticationKeyProvider
+  keyOfHashCompareAuthenticationProviderMethod: key
+  exceptBodyContentHttpServletRequestWrapperUrls: "/v1/upload"
+  ccc:
+    url: "http://202.98.60.231:8080/GtTripleGate/NoKeyInServlet"
+    copartnerId: 60020021
+    copartnerPassword: 361438
+
+
+
