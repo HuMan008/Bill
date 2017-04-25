@@ -194,7 +194,9 @@ public class HashcompareAuthenticationInterceptorSignatureVerifier {
         }
         */
 
-        logger.info("RequestBoyd:{}", jsonBody);
+        if (!StringUtils.isEmpty(jsonBody)) {
+            logger.info("RequestBoyd:{}", jsonBody);
+        }
         String signature = Hmac.SHA1(payload.toString(), key);
         if (!XS.equals(signature)) {
             AuthenticationDebuger debuger = new AuthenticationDebuger();

@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -20,7 +21,7 @@ public class BillProperties {
 
     private String keyOfHashCompareAuthenticationProviderMethod;
 
-    private Set<String> exceptBodyContentHttpServletRequestWrapperUrls;
+    private Set<String> exceptBodyContentHttpServletRequestWrapperUrls = new HashSet<>();
 
     private HashMap<String, String> ccc;
 
@@ -42,10 +43,6 @@ public class BillProperties {
 
     public Set<String> getExceptBodyContentHttpServletRequestWrapperUrls() {
         return exceptBodyContentHttpServletRequestWrapperUrls;
-    }
-
-    public void setExceptBodyContentHttpServletRequestWrapperUrls(Set<String> exceptBodyContentHttpServletRequestWrapperUrls) {
-        this.exceptBodyContentHttpServletRequestWrapperUrls = exceptBodyContentHttpServletRequestWrapperUrls;
     }
 
     public String getKeyOfHashCompareAuthenticationProviderClass() {

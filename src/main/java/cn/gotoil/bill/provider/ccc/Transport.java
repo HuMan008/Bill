@@ -35,7 +35,7 @@ class Transport {
                     return fr;
                 }
             }
-            logger.error("{}", response.getStatusText());
+            logger.error("{}", response.getBody().toString());
         } catch (Exception ex) {
             logger.error("{}", ex);
         }
