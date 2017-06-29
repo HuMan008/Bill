@@ -4,10 +4,7 @@ import cn.gotoil.bill.web.interceptor.authentication.AuthenticationType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Component
@@ -22,7 +19,7 @@ public class BillProperties {
 
     private String keyOfHashCompareAuthenticationProviderMethod;
 
-    private List<String> exceptBodyContentHttpServletRequestWrapperUrls = new HashSet<>();
+    private List<String> exceptBodyContentHttpServletRequestWrapperUrls = new ArrayList<>();
 
     private HashMap<String, String> ccc;
 
