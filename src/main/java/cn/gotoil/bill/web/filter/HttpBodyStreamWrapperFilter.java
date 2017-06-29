@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
+import java.util.regex.Pattern;
 
 
 @Component
@@ -47,9 +49,27 @@ public class HttpBodyStreamWrapperFilter implements Filter {
         }
 
         String url = ((HttpServletRequest) request).getRequestURI();
+        /*
         if (billProperties.getExceptBodyContentHttpServletRequestWrapperUrls().contains(url)) {
             chain.doFilter(request, response);
             return;
+        }*/
+
+        List<String> excepts = billProperties.getExceptBodyContentHttpServletRequestWrapperUrls();
+        if (excepts != null && excepts.size() > 0) {
+            for (String exp : excepts) {
+                if (url.equals(exp)) {
+                    return;
+                }
+
+                if (exp.indexOf("*") != -1) {
+                    exp = exp.replace("*", ".*");
+                    if (Pattern.compile(exp).matcher(url).matches()) {
+                        return;
+                    }
+                }
+
+            }
         }
 
         BodyContentHttpServletRequestWrapper bodyContentHttpServletRequestWrapper = new BodyContentHttpServletRequestWrapper((HttpServletRequest) request);

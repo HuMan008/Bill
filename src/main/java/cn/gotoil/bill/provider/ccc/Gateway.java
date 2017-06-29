@@ -68,7 +68,7 @@ class Gateway {
     }
 
 
-    public List<Card> bindCards(String mobile) {
+    public static List<Card> bindCards(String mobile) {
 
         initCCCConfig();
 
