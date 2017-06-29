@@ -59,12 +59,14 @@ public class HttpBodyStreamWrapperFilter implements Filter {
         if (excepts != null && excepts.size() > 0) {
             for (String exp : excepts) {
                 if (url.equals(exp)) {
+                    chain.doFilter(request, response);
                     return;
                 }
 
                 if (exp.indexOf("*") != -1) {
                     exp = exp.replace("*", ".*");
                     if (Pattern.compile(exp).matcher(url).matches()) {
+                        chain.doFilter(request, response);
                         return;
                     }
                 }
