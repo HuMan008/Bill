@@ -30,6 +30,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.regex.Pattern;
 
 
 @Component
@@ -77,9 +79,30 @@ public class HashcompareAuthenticationInterceptor implements HandlerInterceptor 
         */
 
         if (!(request instanceof BodyContentHttpServletRequestWrapper)) {
-            if (!billProperties.getExceptBodyContentHttpServletRequestWrapperUrls().contains(uri)) {
-                throw new BillException(CommonError.Unsupported);
+
+            List<String> excepts = billProperties.getExceptBodyContentHttpServletRequestWrapperUrls();
+            if (excepts != null && excepts.size() > 0) {
+                boolean inExcept = false;
+                for (String exp : excepts) {
+                    if (uri.equals(exp)) {
+                        inExcept = true;
+                        break;
+                    }
+
+                    if (exp.indexOf("*") != -1) {
+                        exp = exp.replace("*", ".*");
+                        if (Pattern.compile(exp).matcher(uri).matches()) {
+                            inExcept = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!inExcept) {
+                    throw new BillException(CommonError.Unsupported);
+                }
             }
+
         }
 
         AuthenticationType billApiAuthenticationType = authenticationLauncher.getAuthenticationType(handler);

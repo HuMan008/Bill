@@ -55,6 +55,7 @@ public class ObjectHelper {
         return objectMapper;
     }
 
+    @SuppressWarnings("all")
     public static Map<String, Object> introspect(Object obj) throws Exception {
         Map<String, Object> result = new HashMap<>();
         BeanInfo info = Introspector.getBeanInfo(obj.getClass());
@@ -67,6 +68,7 @@ public class ObjectHelper {
         return result;
     }
 
+    @SuppressWarnings("all")
     public static Map<String, String> introspectStringValueMap(Object obj) throws Exception {
         Map<String, String> result = new HashMap<>();
         BeanInfo info = Introspector.getBeanInfo(obj.getClass());
@@ -79,6 +81,7 @@ public class ObjectHelper {
         return result;
     }
 
+    @SuppressWarnings("all")
     public static String jsonString(Object object) {
         try {
             return objectWriter.writeValueAsString(object);
@@ -89,6 +92,7 @@ public class ObjectHelper {
         return "";
     }
 
+    @SuppressWarnings("all")
     public static boolean allPropertiesIsNull(Object obj) {
         try {
             BeanInfo info = Introspector.getBeanInfo(obj.getClass());
@@ -107,8 +111,8 @@ public class ObjectHelper {
         }
     }
 
-//    @SuppressWarnings("all")
-    public static Object changeAnnotationValue(Annotation annotation, String key, Object newValue){
+    @SuppressWarnings("all")
+    public static Object changeAnnotationValue(Annotation annotation, String key, Object newValue) {
 
         Object handler = Proxy.getInvocationHandler(annotation);
         Field f;
@@ -128,7 +132,7 @@ public class ObjectHelper {
         if (oldValue == null || oldValue.getClass() != newValue.getClass()) {
             throw new IllegalArgumentException();
         }
-        memberValues.put(key,newValue);
+        memberValues.put(key, newValue);
         return oldValue;
     }
 }
