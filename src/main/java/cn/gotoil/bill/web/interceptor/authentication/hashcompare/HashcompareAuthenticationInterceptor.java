@@ -129,7 +129,7 @@ public class HashcompareAuthenticationInterceptor implements HandlerInterceptor 
                 new HashcompareAuthenticationInterceptorSignatureVerifier(request, body);
         verifier.setStringRedisTemplate(stringRedisTemplate);
         verifier.setAuthKeyMethod(authKeyMethod);
-        verifier.verify(billApiAuthenticationType);
+        verifier.verify(billApiAuthenticationType, billProperties.getAllowDevSkipSignature());
 
         return true;
     }

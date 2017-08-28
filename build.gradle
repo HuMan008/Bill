@@ -1,5 +1,5 @@
 group 'cn.gotoil'
-version '1.0.1-SNAPSHOT'
+version '1.0.2-SNAPSHOT'
 
 buildscript {
 	ext {
@@ -22,7 +22,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
 	baseName = 'bill'
-	version = '0.0.1-SNAPSHOT'
+	version = '1.0.2-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8

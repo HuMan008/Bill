@@ -118,7 +118,7 @@ public class HashcompareAuthenticationInterceptorSignatureVerifier {
         return true;
     }
 
-    public void verify(AuthenticationType billApiAuthenticationType) throws Exception {
+    public void verify(AuthenticationType billApiAuthenticationType, String allowDevSkip) throws Exception {
         if (billApiAuthenticationType == AuthenticationType.None) {
             return;
         }
@@ -207,10 +207,10 @@ public class HashcompareAuthenticationInterceptorSignatureVerifier {
             logger.info("{}", debuger);
             request.setAttribute(AuthenticationDebuger.AuthenticationDebugerKey, debuger);
 
-            if (!"YES".equals(request.getHeader("DevSkip"))) {
-                throw new AuthenticationException(AuthenticationError.SignatureError);
-            } else {
+            if ("YES".equals(allowDevSkip) && "YES".equals(request.getHeader("DevSkip"))) {
                 logger.warn("DevSkiped");
+            } else {
+                throw new AuthenticationException(AuthenticationError.SignatureError);
             }
         }
 

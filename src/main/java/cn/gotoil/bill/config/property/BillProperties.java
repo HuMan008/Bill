@@ -13,6 +13,8 @@ public class BillProperties {
 
     private AuthenticationType defaultAuthenticationType;
 
+    private String allowDevSkipSignature;
+
     private String apiResponseAroundControllerPackagesExecution;
 
     private String keyOfHashCompareAuthenticationProviderClass;
@@ -67,10 +69,23 @@ public class BillProperties {
         this.ccc = ccc;
     }
 
+    public String getAllowDevSkipSignature() {
+        return allowDevSkipSignature;
+    }
+
+    public void setAllowDevSkipSignature(String allowDevSkipSignature) {
+        this.allowDevSkipSignature = allowDevSkipSignature;
+    }
+
+    public void setExceptBodyContentHttpServletRequestWrapperUrls(List<String> exceptBodyContentHttpServletRequestWrapperUrls) {
+        this.exceptBodyContentHttpServletRequestWrapperUrls = exceptBodyContentHttpServletRequestWrapperUrls;
+    }
+
     @Override
     public String toString() {
         return "BillProperties{" +
                 "defaultAuthenticationType=" + defaultAuthenticationType +
+                ", allowDevSkipSignature='" + allowDevSkipSignature + '\'' +
                 ", apiResponseAroundControllerPackagesExecution='" + apiResponseAroundControllerPackagesExecution + '\'' +
                 ", keyOfHashCompareAuthenticationProviderClass='" + keyOfHashCompareAuthenticationProviderClass + '\'' +
                 ", keyOfHashCompareAuthenticationProviderMethod='" + keyOfHashCompareAuthenticationProviderMethod + '\'' +

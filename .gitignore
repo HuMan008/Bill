@@ -87,3 +87,12 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+src/assembly/
+src/it/
+src/main/filters/
+src/main/java/cn/gotoil/bill/provider/ccc/response/
+src/main/java/cn/gotoil/bill/web/controller/
+src/main/resources/
+src/main/webapp/
+src/site/
+src/test/filters/
