@@ -29,6 +29,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("unused")
 @Component
 public class AllExceptionHandler implements HandlerExceptionResolver, Ordered {
 

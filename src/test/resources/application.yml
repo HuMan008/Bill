@@ -36,9 +36,10 @@ logging:
 
 bill:
   defaultAuthenticationType: Signature
-  apiResponseAroundControllerPackagesExecution: "execution(* cn.gotoil.owstoni.web.controller.v1..*.*Action(..))"
-  keyOfHashCompareAuthenticationProviderClass: cn.gotoil.owstoni.classes.HashCompareAuthenticationKeyProvider
+  apiResponseAroundControllerPackagesExecution: "execution(* cn.gotoil.bill.web.controller..*.*Action(..))"
+  keyOfHashCompareAuthenticationProviderClass: cn.gotoil.bill.KeyProvider
   keyOfHashCompareAuthenticationProviderMethod: key
+  keyOfHashCompareAuthenticationPathPrefix: ""
   exceptBodyContentHttpServletRequestWrapperUrls: "/v1/upload"
   ccc:
     url: "http://202.98.60.231:8080/GtTripleGate/NoKeyInServlet"

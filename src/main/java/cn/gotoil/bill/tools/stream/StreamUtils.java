@@ -17,6 +17,7 @@ package cn.gotoil.bill.tools.stream;
 
 import java.io.*;
 
+@SuppressWarnings("unused")
 public class StreamUtils {
 
     public final static String stringFromInputStream(InputStream in) throws IOException {

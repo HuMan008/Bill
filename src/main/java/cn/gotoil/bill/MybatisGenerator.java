@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MybatisGenerator {
 
     public static void gen() throws Exception {

@@ -15,6 +15,7 @@
 package cn.gotoil.bill.exception;
 
 
+@SuppressWarnings("unused")
 public class AuthenticationDebuger {
 
     public static final String AuthenticationDebugerKey = "AuthenticationDebugerKey";

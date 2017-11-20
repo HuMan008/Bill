@@ -11,15 +11,17 @@ import java.util.*;
 @ConfigurationProperties(prefix = "bill")
 public class BillProperties {
 
-    private AuthenticationType defaultAuthenticationType;
+    private AuthenticationType defaultAuthenticationType = AuthenticationType.Signature;
 
-    private String allowDevSkipSignature;
+    private String allowDevSkipSignature = "NO";
 
     private String apiResponseAroundControllerPackagesExecution;
 
     private String keyOfHashCompareAuthenticationProviderClass;
 
     private String keyOfHashCompareAuthenticationProviderMethod;
+
+    private String keyOfHashCompareAuthenticationPathPrefix = "";
 
     private List<String> exceptBodyContentHttpServletRequestWrapperUrls = new ArrayList<>();
 
@@ -81,6 +83,14 @@ public class BillProperties {
         this.exceptBodyContentHttpServletRequestWrapperUrls = exceptBodyContentHttpServletRequestWrapperUrls;
     }
 
+    public String getKeyOfHashCompareAuthenticationPathPrefix() {
+        return keyOfHashCompareAuthenticationPathPrefix;
+    }
+
+    public void setKeyOfHashCompareAuthenticationPathPrefix(String keyOfHashCompareAuthenticationPathPrefix) {
+        this.keyOfHashCompareAuthenticationPathPrefix = keyOfHashCompareAuthenticationPathPrefix;
+    }
+
     @Override
     public String toString() {
         return "BillProperties{" +
@@ -89,6 +99,7 @@ public class BillProperties {
                 ", apiResponseAroundControllerPackagesExecution='" + apiResponseAroundControllerPackagesExecution + '\'' +
                 ", keyOfHashCompareAuthenticationProviderClass='" + keyOfHashCompareAuthenticationProviderClass + '\'' +
                 ", keyOfHashCompareAuthenticationProviderMethod='" + keyOfHashCompareAuthenticationProviderMethod + '\'' +
+                ", keyOfHashCompareAuthenticationPathPrefix='" + keyOfHashCompareAuthenticationPathPrefix + '\'' +
                 ", exceptBodyContentHttpServletRequestWrapperUrls=" + exceptBodyContentHttpServletRequestWrapperUrls +
                 ", ccc=" + ccc +
                 '}';

@@ -19,6 +19,7 @@ public class BillException extends RuntimeException {
 
     private int tickcode;
 
+    @SuppressWarnings("unused")
     public BillException(int tickcode, String message) {
         super(message);
         this.tickcode = tickcode;

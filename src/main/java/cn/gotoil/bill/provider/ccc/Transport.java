@@ -29,7 +29,7 @@ class Transport {
         try {
             String xml = XMLConverter.xmlStringFromRequest(request);
             HttpResponse response = Unirest.post(CCCConfig.getUrl()).body(xml).asString();
-            if (response.getStatus() >= 200 && response.getStatus() < 300) {
+            if (response != null && response.getStatus() >= 200 && response.getStatus() < 300) {
                 Response fr = XMLConverter.xmlObjectFromResponse((String) response.getBody());
                 if (fr.getCode() == 0) {
                     return fr;

@@ -20,6 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+@SuppressWarnings("unused")
 public class ServletRequestHelper {
 
     public static String XU() {
@@ -47,6 +48,5 @@ public class ServletRequestHelper {
         } catch (Exception ex) {
             return null;
         }
-
     }
 }

@@ -16,6 +16,7 @@ package cn.gotoil.bill.web.filter;
 
 
 import cn.gotoil.bill.config.property.BillProperties;
+import cn.gotoil.bill.web.interceptor.authentication.BillHashCompareAuthHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 
+@SuppressWarnings("unused")
 @Component
 //@WebFilter(filterName = "HttpBodyStreamWrapperFilter", urlPatterns = "/api/*")
 public class HttpBodyStreamWrapperFilter implements Filter {
@@ -49,34 +51,18 @@ public class HttpBodyStreamWrapperFilter implements Filter {
         }
 
         String url = ((HttpServletRequest) request).getRequestURI();
-        /*
-        if (billProperties.getExceptBodyContentHttpServletRequestWrapperUrls().contains(url)) {
+
+        if (BillHashCompareAuthHelper.isSkipBillHashURL(url, billProperties)) {
             chain.doFilter(request, response);
             return;
-        }*/
-
-        List<String> excepts = billProperties.getExceptBodyContentHttpServletRequestWrapperUrls();
-        if (excepts != null && excepts.size() > 0) {
-            for (String exp : excepts) {
-                if (url.equals(exp)) {
-                    chain.doFilter(request, response);
-                    return;
-                }
-
-                if (exp.indexOf("*") != -1) {
-                    exp = exp.replace("*", ".*");
-                    if (Pattern.compile(exp).matcher(url).matches()) {
-                        chain.doFilter(request, response);
-                        return;
-                    }
-                }
-
-            }
         }
+
 
         BodyContentHttpServletRequestWrapper bodyContentHttpServletRequestWrapper = new BodyContentHttpServletRequestWrapper((HttpServletRequest) request);
         chain.doFilter(bodyContentHttpServletRequestWrapper, response);
     }
+
+
 
     @Override
     public void destroy() {

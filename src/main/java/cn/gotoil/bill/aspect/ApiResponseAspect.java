@@ -26,38 +26,44 @@ import org.springframework.validation.ObjectError;
 //@Component
 public class ApiResponseAspect {
 
-    //    private static Logger logger = LoggerFactory.getLogger(ApiResponseAspect.class);
+//    private static Logger logger = LoggerFactory.getLogger(ApiResponseAspect.class);
+//
+//
+//    @Autowired
+//    private BillProperties billProperties;
+//
+//    @Autowired
+//    private DefaultListableBeanFactory beanFactory;
+//
+//    @PostConstruct
+//    public void construct() {
+//
+//        if (billProperties == null) {
+//            return;
+//        }
+//
+//        String execution = billProperties.getApiResponseAroundControllerPackagesExecution();
+//        if (StringUtils.isEmpty(execution)) {
+//            return;
+//        }
+//
+//
+//        logger.info("ApiResponseAroundControllerPackagesExecution:{}", execution);
+//        try {
+//            Method method = ApiResponseAspect.class.getMethod("around", ProceedingJoinPoint.class);
+//            Around around = method.getAnnotation(Around.class);
+//            ObjectHelper.changeAnnotationValue(around, "value", execution);
+//            if (around != null) {
+//                logger.info("{}", around);
+//            }
+//        } catch (Exception ex) {
+//            logger.error("ApiResponseAspect:{}", ex);
+//        }
+//    }
 
-    /*
-    @Autowired
-    private BillProperties billProperties;
 
-
-    @PostConstruct
-    public void construct() {
-
-        if (billProperties == null) {
-            return;
-        }
-
-        String execution = billProperties.getApiResponseAroundControllerPackagesExecution();
-        if (StringUtils.isEmpty(execution)) {
-            return;
-        }
-
-        logger.info("ApiResponseAroundControllerPackagesExecution:{}", execution);
-        try {
-            Method method = ApiResponseAspect.class.getMethod("around", ProceedingJoinPoint.class);
-            Around around = method.getAnnotation(Around.class);
-            ObjectHelper.changeAnnotationValue(around, "value", execution);
-        } catch (Exception ex) {
-            logger.error("ApiResponseAspect:{}", ex);
-        }
-    }
-    */
 
     private static String formatBindingErrorMessages(BindingResult bindingResult) {
-
         /*
         return bindingResult.getAllErrors()
                 .stream().map(err -> {
@@ -68,7 +74,6 @@ public class ApiResponseAspect {
                 }).reduce("", (p, c) -> p + c + ", ");
 
         */
-
 
         StringBuilder builder = new StringBuilder(128);
         for (ObjectError error : bindingResult.getAllErrors()) {
@@ -90,7 +95,7 @@ public class ApiResponseAspect {
 
 //    @Around("execution(* cn.gotoil.bill.web.controller.v1..*.*Action(..))")
 //    public Object around(ProceedingJoinPoint point) throws Throwable {
-//        retØurn aroundCall(point);
+//        return aroundCall(point);
 //    }
 
     protected Object aroundCall(ProceedingJoinPoint point) throws Throwable {

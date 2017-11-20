@@ -26,6 +26,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 @Component
 public class AllErrorHandler implements ErrorViewResolver {
 

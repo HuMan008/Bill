@@ -15,10 +15,13 @@
 package cn.gotoil.bill.exception;
 
 
+@SuppressWarnings("unused")
 public enum CommonError implements BillError {
+
     Forbidden(403, "Forbidden"),
     NotFound(404, "Not Found"),
     EmptyRequestBody(416, "Empty Request Data"),
+
     ValidateError(9100, "Input Validate Error"),
     Unsupported(9998, "Unsupported request"),
     Unknown(9999, "Unknow Server Error");

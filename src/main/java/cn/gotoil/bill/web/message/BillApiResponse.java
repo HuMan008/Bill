@@ -18,6 +18,7 @@ package cn.gotoil.bill.web.message;
 import cn.gotoil.bill.exception.BillError;
 import cn.gotoil.bill.exception.BillException;
 
+@SuppressWarnings("unused")
 public class BillApiResponse {
 
 

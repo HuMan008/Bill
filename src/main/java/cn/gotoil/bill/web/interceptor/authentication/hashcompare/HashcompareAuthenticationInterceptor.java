@@ -21,6 +21,7 @@ import cn.gotoil.bill.exception.CommonError;
 import cn.gotoil.bill.web.annotation.launcher.AuthenticationLauncher;
 import cn.gotoil.bill.web.filter.BodyContentHttpServletRequestWrapper;
 import cn.gotoil.bill.web.interceptor.authentication.AuthenticationType;
+import cn.gotoil.bill.web.interceptor.authentication.BillHashCompareAuthHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -79,30 +80,9 @@ public class HashcompareAuthenticationInterceptor implements HandlerInterceptor 
         */
 
         if (!(request instanceof BodyContentHttpServletRequestWrapper)) {
-
-            List<String> excepts = billProperties.getExceptBodyContentHttpServletRequestWrapperUrls();
-            if (excepts != null && excepts.size() > 0) {
-                boolean inExcept = false;
-                for (String exp : excepts) {
-                    if (uri.equals(exp)) {
-                        inExcept = true;
-                        break;
-                    }
-
-                    if (exp.indexOf("*") != -1) {
-                        exp = exp.replace("*", ".*");
-                        if (Pattern.compile(exp).matcher(uri).matches()) {
-                            inExcept = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!inExcept) {
-                    throw new BillException(CommonError.Unsupported);
-                }
+            if (!BillHashCompareAuthHelper.isSkipBillHashURL(uri, billProperties)) {
+                throw new BillException(CommonError.Unsupported);
             }
-
         }
 
         AuthenticationType billApiAuthenticationType = authenticationLauncher.getAuthenticationType(handler);
