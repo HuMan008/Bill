@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -39,7 +39,8 @@ public class BillWebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(hashcompareAuthenticationInterceptor);
+        InterceptorRegistration registration = registry.addInterceptor(hashcompareAuthenticationInterceptor);
+        registration.addPathPatterns(billFilterAndInterceptorUrlPatterns());
     }
 
 
@@ -47,6 +48,12 @@ public class BillWebMvcConfig extends WebMvcConfigurerAdapter {
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(wrapperFilter);
+        registrationBean.addUrlPatterns(billFilterAndInterceptorUrlPatterns());
+        registrationBean.setOrder(99);
+        return registrationBean;
+    }
+
+    private String billFilterAndInterceptorUrlPatterns() {
         String urlPatterns = billProperties.getKeyOfHashCompareAuthenticationPathPrefix();
         if (urlPatterns == null) {
             urlPatterns = "";
@@ -56,10 +63,7 @@ public class BillWebMvcConfig extends WebMvcConfigurerAdapter {
         } else {
             urlPatterns += "/*";
         }
-
-        registrationBean.addUrlPatterns(urlPatterns);
-        registrationBean.setOrder(99);
-        return registrationBean;
+        return urlPatterns;
     }
 
 
