@@ -40,7 +40,7 @@ public class BillWebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration registration = registry.addInterceptor(hashcompareAuthenticationInterceptor);
-        registration.addPathPatterns(billFilterAndInterceptorUrlPatterns());
+        registration.addPathPatterns(billFilterAndInterceptorUrlPatterns() + "*");
     }
 
 
@@ -59,9 +59,9 @@ public class BillWebMvcConfig extends WebMvcConfigurerAdapter {
             urlPatterns = "";
         }
         if (urlPatterns.endsWith("/")) {
-            urlPatterns += "**";
+            urlPatterns += "*";
         } else {
-            urlPatterns += "/**";
+            urlPatterns += "/*";
         }
         return urlPatterns;
     }
