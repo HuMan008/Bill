@@ -59,9 +59,9 @@ public class BillWebMvcConfig extends WebMvcConfigurerAdapter {
             urlPatterns = "";
         }
         if (urlPatterns.endsWith("/")) {
-            urlPatterns += "*";
+            urlPatterns += "**";
         } else {
-            urlPatterns += "/*";
+            urlPatterns += "/**";
         }
         return urlPatterns;
     }
