@@ -206,7 +206,7 @@ public class HashcompareAuthenticationInterceptorSignatureVerifier {
             debuger.setPayload(payload.toString());
             debuger.setRandom(XR);
             logger.info("{}", debuger);
-            request.setAttribute(AuthenticationDebuger.AuthenticationDebugerKey, debuger);
+            //request.setAttribute(AuthenticationDebuger.AuthenticationDebugerKey, debuger);
 
             if ("YES".equals(allowDevSkip) && "YES".equals(request.getHeader("DevSkip"))) {
                 logger.warn("DevSkiped");
