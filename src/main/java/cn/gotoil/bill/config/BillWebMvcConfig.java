@@ -14,13 +14,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.session.web.http.SessionRepositoryFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-@Configuration
-@EnableWebMvc
+//@Configuration
+//@EnableWebMvc
 public class BillWebMvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
@@ -30,10 +32,11 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     private HttpBodyStreamWrapperFilter wrapperFilter;
 
     @Autowired
-    private SecureProperties secureProperties;
+    private SessionRepositoryFilter sessionRepositoryFilter;
 
     @Autowired
-    private HashcompareAuthenticationInterceptor hashcompareAuthenticationInterceptor;
+    private SecureProperties secureProperties;
+
 
 //    @Bean
 //    public HashcompareAuthenticationInterceptor authenticationInterceptor() {
@@ -42,9 +45,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        InterceptorRegistration registration = registry.addInterceptor(hashcompareAuthenticationInterceptor);
-        registration.addPathPatterns(billFilterAndInterceptorUrlPatterns() + "*");
-
+        registry.addInterceptor(hashcompareAuthenticationInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns(billProperties.getKeyOfHashCompareAuthenticationPathPrefix()));
         registry.addInterceptor(permissionInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns(secureProperties.getFilterUrl()));
         registry.addInterceptor(hashcompareAuthenticationInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns(billProperties.getKeyOfHashCompareAuthenticationPathPrefix()));
     }
@@ -65,7 +66,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public FilterRegistrationBean filterRegistrationBean() {
+    public FilterRegistrationBean filterRegistrationBean1() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(wrapperFilter);
         registrationBean.addUrlPatterns(billFilterAndInterceptorUrlPatterns());
@@ -73,10 +74,22 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
         return registrationBean;
     }
 
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean2() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(sessionRepositoryFilter);
+        registrationBean.addUrlPatterns(secureProperties.getFilterUrl());
+        registrationBean.setOrder(98);
+        return registrationBean;
+    }
+
     private String billFilterAndInterceptorUrlPatterns() {
         String urlPatterns = billProperties.getKeyOfHashCompareAuthenticationPathPrefix();
         if (urlPatterns == null) {
             urlPatterns = "";
+        }
+        if(urlPatterns.endsWith("/*")){
+            return urlPatterns;
         }
         if (urlPatterns.endsWith("/")) {
             urlPatterns += "*";
@@ -89,6 +102,9 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     private String billFilterAndInterceptorUrlPatterns(String urlPatterns) {
         if (urlPatterns == null) {
             urlPatterns = "";
+        }
+        if(urlPatterns.endsWith("/*")){
+            return urlPatterns;
         }
         if (urlPatterns.endsWith("/")) {
             urlPatterns += "*";

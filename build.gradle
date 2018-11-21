@@ -1,5 +1,5 @@
 group 'cn.gotoil'
-version '2.0.3-SNAPSHOT'
+version '2.0.16-SNAPSHOT'
 
 buildscript {
 	ext {
@@ -10,20 +10,23 @@ buildscript {
 			url "http://201.201.201.174:8081/nexus/content/groups/public/"
 		}
 	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+//	dependencies {
+//		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//	}
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
-apply plugin: 'org.springframework.boot'
+//apply plugin: 'org.springframework.boot'
 
+compileJava.options.encoding = "UTF-8"
+
+//sourceSets.main.java.srcDirs = 'src/main/java'
 jar {
 	baseName = 'bill'
-	version = '2.0.3-SNAPSHOT'
+	version = '2.0.16-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
@@ -47,6 +50,8 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-aop:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+	//spring session
+	compile("org.springframework.session:spring-session-data-redis:${springBootVersion}")
 
 //thymeleaf模版引擎及自定义方言
 	compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.11.RELEASE'
@@ -76,9 +81,6 @@ dependencies {
 }
 
 
-jar.into('/') {
-	from('classes/java/main')
-}
 jar.enabled==true
 
 

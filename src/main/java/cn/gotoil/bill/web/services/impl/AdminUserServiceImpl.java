@@ -2,6 +2,7 @@ package cn.gotoil.bill.web.services.impl;
 
 import cn.gotoil.bill.config.property.SecureProperties;
 import cn.gotoil.bill.model.BaseAdminUser;
+import cn.gotoil.bill.web.helper.ServletRequestHelper;
 import cn.gotoil.bill.web.services.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
 
-    @Autowired
-    SecureProperties secureProperties;
-
-
     /**
      * 业务中 登录后实现这个方法 将权限放入到session中
-     *
-     * @param request
-     * @param baseAdminUser
+     ** @param baseAdminUser
      */
     @Override
-    public void afterLogin(HttpServletRequest request, BaseAdminUser baseAdminUser) {
-        request.getSession().setAttribute(secureProperties.getSessionKey(), baseAdminUser);
+    public void afterLogin(BaseAdminUser baseAdminUser) {
+        ServletRequestHelper.httpServletRequest().getSession().setAttribute(SecureProperties.SessionKey,baseAdminUser);
     }
 }

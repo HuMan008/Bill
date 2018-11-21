@@ -1,5 +1,6 @@
 package cn.gotoil.bill.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,7 +10,7 @@ import java.util.Set;
  * @author SuYajiang SYJ247@qq.com
  * @Date 2018-10-30 14:48
  */
-public class BaseAdminUser {
+public class BaseAdminUser implements Serializable {
 
 
     String roleStr;

@@ -15,10 +15,8 @@ public interface AdminUserService<T extends BaseAdminUser> {
 
     /**
      * 业务中 登录后实现这个方法 将权限放入到session中
-     *
-     * @param request
      */
-    void afterLogin(HttpServletRequest request, T baseAdminUser);
+    void afterLogin( T baseAdminUser);
 
 
 }

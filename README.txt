@@ -1,0 +1,1 @@
+gradle uploadArchives -Dorg.gradle.warning.mode=all -x test

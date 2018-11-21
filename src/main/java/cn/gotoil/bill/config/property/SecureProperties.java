@@ -22,8 +22,8 @@ public class SecureProperties {
     // 错误页面URL
     private String errorPageUrl = "error/error";
 
-    // session中的key 不提供set方法
-    private String SessionKey = "UserInfo";
+    //session中的key 不提供set方法
+    public static final String SessionKey = "UserInfo";
 
 
     public String getFilterUrl() {
