@@ -16,6 +16,7 @@ package cn.gotoil.bill.provider.ccc;
 
 
 import cn.gotoil.bill.tools.encoder.Hash;
+import cn.gotoil.bill.tools.string.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,16 +37,26 @@ class RequestSigner {
 
 
     public Request signedRequest(RequestEntity requestEntity) {
+        return signedRequest(requestEntity,CCCConfig.getCopartnerId(),CCCConfig.getCopartnerPassword());
 
+    }
+
+
+
+
+    public Request signedRequest(RequestEntity requestEntity,String copartnerId,String copartnerPassword){
+        assert copartnerId!=null;
+        assert copartnerPassword!=null;
         Request request = new Request(requestEntity);
         request.setTime(threadLocalDateFormatter.get().format(new Date()));
-        request.setCopartnerId(CCCConfig.getCopartnerId());
-        signMD5(request);
-        signMD52(request);
+        request.setCopartnerId(copartnerId);
+        signMD5(request,copartnerPassword);
+        signMD52(request,copartnerPassword);
         return request;
     }
 
-    private void signMD5(Request request) {
+
+    private void signMD5(Request request,String copartnerPassword) {
         //[request-id][request-flow][copartner-id][card][copartnerPassword][money][time] [合作方密码]
         String payload = stringfly(request.getRequestId()) +
                 stringfly(request.getRequestFlow()) +
@@ -54,21 +65,23 @@ class RequestSigner {
                 stringfly(request.getPassword()) +
                 String.valueOf(request.getMoney()) +
                 request.getTime() +
-                CCCConfig.getCopartnerPassword();
+                copartnerPassword;
 
 //        logger.info("MD5 Payload:{}", payload);
         request.setMd5(Hash.md5(payload));
     }
 
-    private void signMD52(Request request) {
+
+
+    private void signMD52(Request request,String copartnerPassword ) {
         HashMap<String, String> parameters = request.getParameters();
         String payload;
         if (parameters == null || parameters.size() < 1) {
-            payload = CCCConfig.getCopartnerPassword();
+            payload =copartnerPassword;
         } else {
             StringBuilder stringBuilder = new StringBuilder();
             request.getEntity().getSeq().forEach(key -> stringBuilder.append(parameters.get(key)));
-            stringBuilder.append(CCCConfig.getCopartnerPassword());
+            stringBuilder.append(copartnerPassword);
             payload = stringBuilder.toString();
         }
 //        logger.info("MD52 Payload:{}", payload);

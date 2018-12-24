@@ -41,10 +41,17 @@ public class DateUtils {
             return new SimpleDateFormat(TIME_FORMAT);
         }
     };
+    private static ThreadLocal<SimpleDateFormat> getThreadLocalDatetimeFormatterNoSymbol= new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat(DATETIME_FORMAT_NO_SYMBOL);
+        }
+    };
 
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";
+    private static final String DATETIME_FORMAT_NO_SYMBOL = "yyyyMMddHHmmss";
 
     private static ConcurrentHashMap<String, ThreadLocal<SimpleDateFormat>> dateFormmaterCacheHashMap = new ConcurrentHashMap();
 
@@ -75,6 +82,10 @@ public class DateUtils {
     public final static SimpleDateFormat simpleDatetimeFormatter() {
         SimpleDateFormat simpleDateFormat = threadLocalDatetimeFormatter.get();
         return simpleDateFormat;
+    }
+
+    public final static SimpleDateFormat datetimeNoSymbolFormatter() {
+       return getThreadLocalDatetimeFormatterNoSymbol.get();
     }
 
     /**
