@@ -37,4 +37,15 @@ public class MybatisGenerator {
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
         myBatisGenerator.generate(null);
     }
+
+    public static void gen(String src) throws Exception {
+        List<String> warnings = new ArrayList<>();
+        boolean overwrite = true;
+        File configFile = new File(src);
+        ConfigurationParser cp = new ConfigurationParser(warnings);
+        Configuration config = cp.parseConfiguration(configFile);
+        DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+        myBatisGenerator.generate(null);
+    }
 }

@@ -48,10 +48,25 @@ public class DateUtils {
         }
     };
 
+    private static ThreadLocal<SimpleDateFormat> threadLocalDateTimeNoSymbolFormatter = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat(DATETIME_NOSYMBOL_FORMAT);
+        }
+    };
+
+    private static ThreadLocal<SimpleDateFormat> threadLocalDateTimeNoWithMilliSecondSymbolFormatter = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat(DATETIME_WITH_MS_NOSYMBOL_FORMAT);
+        }
+    };
+
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";
-    private static final String DATETIME_FORMAT_NO_SYMBOL = "yyyyMMddHHmmss";
+    private static final String DATETIME_NOSYMBOL_FORMAT = "yyyyMMddHHmmss";
+    private static final String DATETIME_WITH_MS_NOSYMBOL_FORMAT = "yyyyMMddHHmmssSSS";
 
     private static ConcurrentHashMap<String, ThreadLocal<SimpleDateFormat>> dateFormmaterCacheHashMap = new ConcurrentHashMap();
 
@@ -101,6 +116,13 @@ public class DateUtils {
     public final static SimpleDateFormat simpleTimeFormatter() {
         return threadLocalTimeFormatter.get();
     }
+    public final static SimpleDateFormat simpleDateTimeNoSymbolFormatter() {
+        return threadLocalDateTimeNoSymbolFormatter.get();
+    }
+    public final static SimpleDateFormat simpleDateTimeWithMilliSecondNoSymbolFormatter() {
+        return threadLocalDateTimeNoWithMilliSecondSymbolFormatter.get();
+    }
+
 
     public final static Date dateAdd(Date date, int years, int months, int days, int hours, int minutes, int seconds) {
         Calendar calendar = Calendar.getInstance();
