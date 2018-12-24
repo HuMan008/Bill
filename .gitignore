@@ -96,3 +96,5 @@ src/main/resources/
 src/main/webapp/
 src/site/
 src/test/filters/
+out
+.idea
