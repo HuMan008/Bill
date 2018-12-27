@@ -21,9 +21,9 @@ import org.springframework.web.servlet.config.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-//@Configuration
-//@EnableWebMvc
-@Component
+@Configuration
+@EnableWebMvc
+
 public class BillWebMvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
@@ -128,6 +128,13 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
         });
 
         super.extendMessageConverters(converters);
+    }
+
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/public/");
+        super.addResourceHandlers(registry);
     }
 
 }
