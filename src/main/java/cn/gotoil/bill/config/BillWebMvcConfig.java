@@ -18,13 +18,14 @@ import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.*;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Configuration
-@EnableWebMvc
 
 public class BillWebMvcConfig extends WebMvcConfigurationSupport {
+
 
     @Autowired
     private BillProperties billProperties;
