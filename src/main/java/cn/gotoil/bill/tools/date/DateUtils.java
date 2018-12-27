@@ -41,12 +41,7 @@ public class DateUtils {
             return new SimpleDateFormat(TIME_FORMAT);
         }
     };
-    private static ThreadLocal<SimpleDateFormat> getThreadLocalDatetimeFormatterNoSymbol= new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(DATETIME_FORMAT_NO_SYMBOL);
-        }
-    };
+
 
     private static ThreadLocal<SimpleDateFormat> threadLocalDateTimeNoSymbolFormatter = new ThreadLocal<SimpleDateFormat>() {
         @Override
@@ -100,7 +95,7 @@ public class DateUtils {
     }
 
     public final static SimpleDateFormat datetimeNoSymbolFormatter() {
-       return getThreadLocalDatetimeFormatterNoSymbol.get();
+       return threadLocalDateTimeNoSymbolFormatter.get();
     }
 
     /**
