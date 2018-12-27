@@ -23,6 +23,7 @@ import java.util.List;
 
 //@Configuration
 //@EnableWebMvc
+@Component
 public class BillWebMvcConfig extends WebMvcConfigurationSupport {
 
     @Autowired
@@ -128,4 +129,5 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
 
         super.extendMessageConverters(converters);
     }
+
 }
