@@ -1,5 +1,5 @@
 group 'cn.gotoil'
-version '2.0.17-SNAPSHOT'
+version '2.0.17.5-SNAPSHOT'
 
 buildscript {
 	ext {
@@ -8,6 +8,8 @@ buildscript {
 	repositories {
 		maven {
 			url "http://201.201.201.174:8081/nexus/content/groups/public/"
+//			url "http://203.203.21.12:8081/#browse/browse:maven-public"
+
 		}
 	}
 //	dependencies {
@@ -26,7 +28,7 @@ compileJava.options.encoding = "UTF-8"
 //sourceSets.main.java.srcDirs = 'src/main/java'
 jar {
 	baseName = 'bill'
-	version = '2.0.17-SNAPSHOT'
+	version = '2.0.17.5-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
@@ -34,6 +36,7 @@ sourceCompatibility = 1.8
 repositories {
 	maven {
 		url "http://201.201.201.174:8081/nexus/content/groups/public/"
+//		url "http://203.203.21.12:8081/#browse/browse:maven-public"
 	}
 }
 
@@ -74,7 +77,7 @@ dependencies {
 //其他
 	//mysql驱动,不支持mysql8
 	compile('mysql:mysql-connector-java:5.1.47')
-	//启用lombok
+	//启用lombok(要装插件)
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
 
 
