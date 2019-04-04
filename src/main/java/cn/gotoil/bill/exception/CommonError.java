@@ -24,7 +24,11 @@ public enum CommonError implements BillError {
 
     ValidateError(9100, "Input Validate Error"),
     Unsupported(9998, "Unsupported request"),
-    Unknown(9999, "Unknow Server Error");
+    Unknown(9999, "Unknow Server Error"),
+
+    Need_Login(10001, "您未登录或登录超时"),
+    PERMISSION_ERROR(10006, "权限不足");
+
 
 
     private int code;

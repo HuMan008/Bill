@@ -4,8 +4,7 @@ import cn.gotoil.bill.config.property.BillProperties;
 import cn.gotoil.bill.config.property.SecureProperties;
 import cn.gotoil.bill.web.filter.HttpBodyStreamWrapperFilter;
 import cn.gotoil.bill.web.interceptor.authentication.hashcompare.HashcompareAuthenticationInterceptor;
-import cn.gotoil.bill.web.interceptor.secure.PermissionInterceptor;
-import cn.gotoil.bill.web.interceptor.secure.RoleInterceptor;
+import cn.gotoil.bill.web.interceptor.authentication.permissioncompare.BillWebAuthenticationInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.session.web.http.SessionRepositoryFilter;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -26,17 +25,20 @@ import java.util.List;
 
 public class BillWebMvcConfig extends WebMvcConfigurationSupport {
 
-
+@SuppressWarnings("all")
     @Autowired
     private BillProperties billProperties;
 
     @Autowired
+    @SuppressWarnings("all")
     private HttpBodyStreamWrapperFilter wrapperFilter;
 
     @Autowired
+    @SuppressWarnings("all")
     private SessionRepositoryFilter sessionRepositoryFilter;
 
     @Autowired
+    @SuppressWarnings("all")
     private SecureProperties secureProperties;
 
 
@@ -48,12 +50,12 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(hashcompareAuthenticationInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns(billProperties.getKeyOfHashCompareAuthenticationPathPrefix()));
-        registry.addInterceptor(permissionInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns(secureProperties.getFilterUrl()));
+        registry.addInterceptor(billWebAuthenticationInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns(secureProperties.getFilterUrl()));
     }
 
     @Bean
-    public PermissionInterceptor permissionInterceptor() {
-        return new PermissionInterceptor();
+    public BillWebAuthenticationInterceptor billWebAuthenticationInterceptor() {
+        return new BillWebAuthenticationInterceptor();
     }
 
     @Bean
@@ -61,10 +63,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
         return new HashcompareAuthenticationInterceptor();
     }
 
-    @Bean
-    public RoleInterceptor roleInterceptor() {
-        return new RoleInterceptor();
-    }
+
 
     @Bean
     public FilterRegistrationBean filterRegistrationBean1() {
@@ -134,7 +133,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/public/");
+//        registry.addResourceHandler("/**").addResourceLocations("classpath:/public/");
         super.addResourceHandlers(registry);
     }
 

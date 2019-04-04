@@ -50,23 +50,7 @@ public class AllExceptionHandler implements HandlerExceptionResolver, Ordered {
 
         logger.error("RestExceptionHandler.resolveException:{}", ex);
 
-        if(ex instanceof BusinessException){
-            String requestType = request.getHeader("X-Requested-With");
-            if (StringUtils.isNotEmpty(requestType) && "XMLHttpRequest".equalsIgnoreCase(requestType)) {
-                MappingJackson2JsonView view = new MappingJackson2JsonView();
-                ModelAndView modelAndView = new ModelAndView();
-                modelAndView.setView(view);
-                BillException dolphinException = (BillException) ex;
-                modelAndView.addObject("status", dolphinException.getTickcode());
-                modelAndView.addObject("message", dolphinException.getMessage());
-                return modelAndView;
 
-            } else {
-                ModelAndView modelAndView = new ModelAndView(secureProperties.getErrorPageUrl());
-                return modelAndView;
-            }
-
-        }
 
         if (ex instanceof BillException) {
             MappingJackson2JsonView view = new MappingJackson2JsonView();
@@ -85,22 +69,7 @@ public class AllExceptionHandler implements HandlerExceptionResolver, Ordered {
         }
 
 
-        if (ex instanceof SecureException) {
-            String requestType = request.getHeader("X-Requested-With");
-            if (StringUtils.isNotEmpty(requestType) && "XMLHttpRequest".equalsIgnoreCase(requestType)) {
-                try {
-                    response.getWriter().print("<script language=\"javascript\">alert('" + ex.getMessage() + "');" +
-                            "</script>");
-                } catch (IOException e1) {
-                    logger.error("{}", e1);
-                }
-                return null;
 
-            } else {
-                ModelAndView modelAndView = new ModelAndView(secureProperties.getLoginPageUrl());
-                return modelAndView;
-            }
-        }
 
         if (ex instanceof NoHandlerFoundException) {
             MappingJackson2JsonView view = new MappingJackson2JsonView();

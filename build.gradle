@@ -1,5 +1,5 @@
 group 'cn.gotoil'
-version '2.0.17.5-SNAPSHOT'
+version '2.1.0-SNAPSHOT'
 
 buildscript {
 	ext {
@@ -28,7 +28,7 @@ compileJava.options.encoding = "UTF-8"
 //sourceSets.main.java.srcDirs = 'src/main/java'
 jar {
 	baseName = 'bill'
-	version = '2.0.17.5-SNAPSHOT'
+	version = '2.1.17.5-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
@@ -57,9 +57,9 @@ dependencies {
 	compile("org.springframework.session:spring-session-data-redis:${springBootVersion}")
 
 //thymeleaf模版引擎及自定义方言
-	compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.11.RELEASE'
+/*	compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.11.RELEASE'
 	compile group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.11.RELEASE'
-	compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.3.0'
+	compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.3.0'*/
 
 //	工具
 	//谷歌guava
