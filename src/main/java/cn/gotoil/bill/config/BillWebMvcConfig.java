@@ -7,13 +7,15 @@ import cn.gotoil.bill.web.interceptor.authentication.hashcompare.HashcompareAuth
 import cn.gotoil.bill.web.interceptor.authentication.permissioncompare.BillWebAuthenticationInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.base.Charsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.session.web.http.SessionRepositoryFilter;
+//import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -24,8 +26,12 @@ import java.util.List;
 @Configuration
 
 public class BillWebMvcConfig extends WebMvcConfigurationSupport {
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+            "classpath:/META-INF/resources/", "classpath:/resources/",
+            "classpath:/static/", "classpath:/public/"};
 
-@SuppressWarnings("all")
+
+    @SuppressWarnings("all")
     @Autowired
     private BillProperties billProperties;
 
@@ -33,19 +39,14 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     @SuppressWarnings("all")
     private HttpBodyStreamWrapperFilter wrapperFilter;
 
-    @Autowired
-    @SuppressWarnings("all")
-    private SessionRepositoryFilter sessionRepositoryFilter;
 
     @Autowired
     @SuppressWarnings("all")
     private SecureProperties secureProperties;
 
-
-//    @Bean
-//    public HashcompareAuthenticationInterceptor authenticationInterceptor() {
-//        return new HashcompareAuthenticationInterceptor();
-//    }
+  /*  @Autowired
+    @SuppressWarnings("all")
+    private SessionRepositoryFilter sessionRepositoryFilter;*/
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -59,10 +60,9 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public HashcompareAuthenticationInterceptor hashcompareAuthenticationInterceptor(){
+    public HashcompareAuthenticationInterceptor hashcompareAuthenticationInterceptor() {
         return new HashcompareAuthenticationInterceptor();
     }
-
 
 
     @Bean
@@ -74,21 +74,22 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
         return registrationBean;
     }
 
-    @Bean
-    public FilterRegistrationBean filterRegistrationBean2() {
+   /* @Bean
+    public FilterRegistrationBean sessionRepositoryFilterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(sessionRepositoryFilter);
-        registrationBean.addUrlPatterns(secureProperties.getFilterUrl());
-        registrationBean.setOrder(98);
+        registrationBean.addUrlPatterns(secureProperties.getRedisSessionFilterUlr());
+        registrationBean.setOrder(Integer.MIN_VALUE+5);
         return registrationBean;
     }
+*/
 
     private String billFilterAndInterceptorUrlPatterns() {
         String urlPatterns = billProperties.getKeyOfHashCompareAuthenticationPathPrefix();
         if (urlPatterns == null) {
             urlPatterns = "";
         }
-        if(urlPatterns.endsWith("/*")){
+        if (urlPatterns.endsWith("/*")) {
             return urlPatterns;
         }
         if (urlPatterns.endsWith("/")) {
@@ -103,7 +104,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
         if (urlPatterns == null) {
             urlPatterns = "";
         }
-        if(urlPatterns.endsWith("/*")){
+        if (urlPatterns.endsWith("/*") ||urlPatterns.endsWith("/**")) {
             return urlPatterns;
         }
         if (urlPatterns.endsWith("/")) {
@@ -127,14 +128,27 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
             }
         });
 
+        converters.add(responseBodyConverter());
+
         super.extendMessageConverters(converters);
     }
 
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/**").addResourceLocations("classpath:/public/");
-        super.addResourceHandlers(registry);
+        registry.addResourceHandler("/swagger-ui.html").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS[0]);
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/static/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     }
+
+
+    @Bean
+    public HttpMessageConverter<String> responseBodyConverter() {
+        StringHttpMessageConverter converter = new StringHttpMessageConverter(
+                Charsets.UTF_8);
+        return converter;
+    }
+
 
 }

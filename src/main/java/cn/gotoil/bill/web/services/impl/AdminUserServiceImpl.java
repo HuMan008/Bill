@@ -23,7 +23,7 @@ public class AdminUserServiceImpl implements AdminUserService {
      ** @param baseAdminUser
      */
     @Override
-    public void afterLogin(BaseAdminUser baseAdminUser) {
-        ServletRequestHelper.httpServletRequest().getSession().setAttribute(SecureProperties.SessionKey,baseAdminUser);
+    public String afterLogin(BaseAdminUser baseAdminUser,String uid,String pwd) {
+       return baseAdminUser.getToken(baseAdminUser,uid,pwd);
     }
 }

@@ -1,5 +1,5 @@
 group 'cn.gotoil'
-version '2.1.0-SNAPSHOT'
+version '2.1.1.011-SNAPSHOT'
 
 buildscript {
 	ext {
@@ -28,7 +28,7 @@ compileJava.options.encoding = "UTF-8"
 //sourceSets.main.java.srcDirs = 'src/main/java'
 jar {
 	baseName = 'bill'
-	version = '2.1.17.5-SNAPSHOT'
+	version = '2.1.1-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
@@ -54,7 +54,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 	//spring session
-	compile("org.springframework.session:spring-session-data-redis:${springBootVersion}")
+	/*compile("org.springframework.session:spring-session-data-redis:${springBootVersion}")*/
 
 //thymeleaf模版引擎及自定义方言
 /*	compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.11.RELEASE'
@@ -79,6 +79,8 @@ dependencies {
 	compile('mysql:mysql-connector-java:5.1.47')
 	//启用lombok(要装插件)
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
+
+	compile group: 'com.auth0', name: 'java-jwt', version: '3.8.1'
 
 
 }

@@ -16,7 +16,7 @@ public interface AdminUserService<T extends BaseAdminUser> {
     /**
      * 业务中 登录后实现这个方法 将权限放入到session中
      */
-    void afterLogin( T baseAdminUser);
+    String afterLogin( T baseAdminUser,String uid,String pwd);
 
 
 }

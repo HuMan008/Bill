@@ -16,6 +16,8 @@ public class SecureProperties {
     // 需要拦截的url
     private String filterUrl = "/web/admin";
 
+
+
     //登录页面请求地址
     private String loginPageUrl = "login";
 
@@ -53,4 +55,6 @@ public class SecureProperties {
     public void setErrorPageUrl(String errorPageUrl) {
         this.errorPageUrl = errorPageUrl;
     }
+
+
 }

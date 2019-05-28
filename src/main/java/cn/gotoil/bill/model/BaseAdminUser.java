@@ -1,5 +1,8 @@
 package cn.gotoil.bill.model;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,5 +55,13 @@ public class BaseAdminUser implements Serializable {
 
     public void setPermissions(Set<String> permissions) {
         this.permissions = permissions;
+    }
+
+
+    public String getToken(BaseAdminUser user,String uid,String pwd) {
+        String token="";
+        token= JWT.create().withAudience(user.getPermissionStr(),user.getRoleStr(),uid)
+                .sign(Algorithm.HMAC256(pwd));
+        return token;
     }
 }
