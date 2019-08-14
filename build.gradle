@@ -1,5 +1,5 @@
 group 'cn.gotoil'
-version '2.1.1.011-SNAPSHOT'
+version '1.0.1-SNAPSHOT'
 
 buildscript {
 	ext {
@@ -28,7 +28,7 @@ compileJava.options.encoding = "UTF-8"
 //sourceSets.main.java.srcDirs = 'src/main/java'
 jar {
 	baseName = 'bill'
-	version = '2.1.1-SNAPSHOT'
+	version = '1.0.1-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
@@ -80,6 +80,8 @@ dependencies {
 	//启用lombok(要装插件)
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
 
+//jwt
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 	compile group: 'com.auth0', name: 'java-jwt', version: '3.8.1'
 
 
@@ -89,7 +91,7 @@ dependencies {
 jar.enabled==true
 
 
-uploadArchives {
+/*uploadArchives {
 	repositories {
 		mavenDeployer {
 			repository(url: "http://201.201.201.174:8081/nexus/content/repositories/snapshots/") {
@@ -100,4 +102,18 @@ uploadArchives {
 			pom.groupId = "$project.group"
 		}
 	}
+}*/
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			repository(url: "http://nexus.pgt:8081/repository/PGTSnapshot") {
+				authentication(userName: "javadev", password: "javadevjavadev")
+			}
+			pom.version = "$project.version"
+			pom.artifactId = "bill"
+			pom.groupId = "$project.group"
+		}
+	}
 }
+

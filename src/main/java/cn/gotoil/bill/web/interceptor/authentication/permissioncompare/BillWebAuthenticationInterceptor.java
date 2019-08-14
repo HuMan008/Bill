@@ -9,10 +9,14 @@ import cn.gotoil.bill.web.annotation.HasPermision;
 import cn.gotoil.bill.web.annotation.HasRole;
 import cn.gotoil.bill.web.annotation.NeedLogin;
 import cn.gotoil.bill.web.helper.ServletRequestHelper;
+import cn.gotoil.bill.web.helper.TokenHelper;
 import cn.gotoil.bill.web.services.AdminUserService;
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.google.common.collect.Sets;
+import io.jsonwebtoken.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,10 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * web权限
@@ -44,9 +46,9 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     SecureProperties secureProperties;
 
+    Method authKeyMethod;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        LoggerFactory.getLogger("-------sessionId----:").error(request.getSession().getId());
         String uri = request.getRequestURI();
 
         /**  如果有HashcompareAuthenticationInterceptor 拦截器  直接不处理 **/
@@ -65,6 +67,58 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
             throw new BillException(CommonError.Need_Login);
         }
 
+        //通过反射获取用户对象 。
+        if (authKeyMethod == null) {
+            synchronized (this) {
+                if (authKeyMethod == null) {
+                    authKeyMethod = Class.forName(secureProperties.getBillWebAuthenicationClass()).
+                            getMethod(secureProperties.getBillWebAuthenicationMethod(), String.class);
+                }
+            }
+        }
+        if(authKeyMethod==null){
+            throw new BillException(CommonError.SystemError);
+        }
+
+        String userId;
+        try {
+            userId = JWT.decode(token).getClaim("id").asString();
+        } catch (JWTDecodeException j) {
+            throw new BillException(CommonError.TokenError);
+        }
+
+        if(StringUtils.isEmpty(userId)){
+            throw new BillException(CommonError.TokenError);
+        }
+
+        BaseAdminUser baseAdminUser = (BaseAdminUser) authKeyMethod.invoke(null,userId);
+
+        //token  校验
+        Boolean verify =false;
+        try{
+            verify = TokenHelper.isVerify(token, baseAdminUser);
+        }catch (Exception e){
+            throw new BillException(CommonError.TokenError);
+        }
+        if (!verify) {
+            throw new BillException(CommonError.TokenError);
+        }
+
+//        token过期
+        if(Calendar.getInstance().getTime().getTime()-JWT.decode(token).getExpiresAt().getTime()>0){
+            throw new BillException(CommonError.TokenError);
+        }
+
+
+        Claims claims=null;
+        try{
+            claims = TokenHelper.parseJWT(token, baseAdminUser);
+
+        }catch (Exception e){
+            throw new BillException(CommonError.TokenError);
+
+        }
+
         HasPermision permissionHandler = ((HandlerMethod) handler).getMethodAnnotation(HasPermision.class);
         HasRole roleHander = ((HandlerMethod) handler).getMethodAnnotation(HasRole.class);
 
@@ -75,13 +129,12 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
         }
         //hasrole里有货
         if(roleHander!=null){
-            vv=userRoleAuthValidate(request,roleHander,token);
+            vv=userRoleAuthValidate(request,roleHander,claims.get("permissionStr",String.class));
         }
         //hasPermission里有货
         if(permissionHandler!=null){
-            vv = vv&& userPermissionAuthValidate(request,permissionHandler,token);
+            vv = vv&& userPermissionAuthValidate(request,permissionHandler,claims.get("roleStr",String.class));
         }
-
         return vv;
 
     }
@@ -109,7 +162,7 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
 
     }
 
-    private boolean userPermissionAuthValidate(HttpServletRequest request, HasPermision permisisonHander,String token) {
+    private boolean userPermissionAuthValidate(HttpServletRequest request, HasPermision permisisonHander,String permissionStr) {
 
         //如果没写权限要求，那就直接验证通过
         if (permisisonHander == null) {
@@ -119,7 +172,6 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
         if (StringUtils.isEmpty(permisisonHander.value()) && permisisonHander.values().length == 0) {
             return true;
         }
-        String permissionStr = JWT.decode(token).getAudience().get(0);
 
         Set<String> permissionSet = new HashSet<String>(Arrays.asList(StringUtils.split(",",permissionStr)));
 
@@ -149,9 +201,8 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
     }
 
 
-    private boolean userRoleAuthValidate(HttpServletRequest request, HasRole roleHander,String token) {
+    private boolean userRoleAuthValidate(HttpServletRequest request, HasRole roleHander,String roleStr) {
         //如果没写权限要求，那就直接验证通过
-        String roleStr = JWT.decode(token).getAudience().get(1);
 
         if (StringUtils.isEmpty(roleHander.value()) && roleHander.values().length == 0) {
             return true;

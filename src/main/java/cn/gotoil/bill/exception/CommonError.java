@@ -27,9 +27,11 @@ public enum CommonError implements BillError {
     Unknown(9999, "Unknow Server Error"),
 
     Need_Login(10001, "您未登录或登录超时"),
-    PERMISSION_ERROR(10006, "权限不足");
+    PERMISSION_ERROR(10006, "权限不足"),
+    TokenError(10005,"TOKEN错误"),
+    SystemError(10007,"系统错误，请联系技术人员"),
 
-
+;
 
     private int code;
 

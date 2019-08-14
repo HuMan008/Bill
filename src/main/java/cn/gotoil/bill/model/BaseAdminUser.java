@@ -18,6 +18,9 @@ public class BaseAdminUser implements Serializable {
 
     String roleStr;
 
+
+    String upwd;
+
     Set<String> roles = new HashSet<>();
 
     String permissionStr;
@@ -58,10 +61,14 @@ public class BaseAdminUser implements Serializable {
     }
 
 
-    public String getToken(BaseAdminUser user,String uid,String pwd) {
-        String token="";
-        token= JWT.create().withAudience(user.getPermissionStr(),user.getRoleStr(),uid)
-                .sign(Algorithm.HMAC256(pwd));
-        return token;
+
+    public String getUpwd() {
+        return upwd;
     }
+
+    public void setUpwd(String upwd) {
+        this.upwd = upwd;
+    }
+
+
 }
