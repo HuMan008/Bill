@@ -7,8 +7,8 @@ buildscript {
 	}
 	repositories {
 		maven {
-			url "http://201.201.201.174:8081/nexus/content/groups/public/"
-//			url "http://203.203.21.12:8081/#browse/browse:maven-public"
+//			url "http://201.201.201.174:8081/nexus/content/groups/public/"
+			url "http://203.203.21.12:8081/#browse/browse:maven-public"
 
 		}
 	}
@@ -35,8 +35,8 @@ sourceCompatibility = 1.8
 
 repositories {
 	maven {
-		url "http://201.201.201.174:8081/nexus/content/groups/public/"
-//		url "http://203.203.21.12:8081/#browse/browse:maven-public"
+//		url "http://201.201.201.174:8081/nexus/content/groups/public/"
+		url "http://203.203.21.12:8081/#browse/browse:maven-public"
 	}
 }
 
