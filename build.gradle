@@ -1,5 +1,5 @@
 group 'cn.gotoil'
-version '1.0.1-SNAPSHOT'
+version '2.1.0_20191023-SNAPSHOT'
 
 buildscript {
 	ext {
@@ -8,7 +8,7 @@ buildscript {
 	repositories {
 		maven {
 //			url "http://201.201.201.174:8081/nexus/content/groups/public/"
-			url "http://203.203.21.12:8081/#browse/browse:maven-public"
+			url "http://nexus.pgt:8081/repository/pgtmaven/"
 
 		}
 	}
@@ -28,7 +28,7 @@ compileJava.options.encoding = "UTF-8"
 //sourceSets.main.java.srcDirs = 'src/main/java'
 jar {
 	baseName = 'bill'
-	version = '1.0.1-SNAPSHOT'
+	version = '2.1.0_20191023-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
@@ -36,7 +36,7 @@ sourceCompatibility = 1.8
 repositories {
 	maven {
 //		url "http://201.201.201.174:8081/nexus/content/groups/public/"
-		url "http://203.203.21.12:8081/#browse/browse:maven-public"
+		url "http://nexus.pgt:8081/repository/pgtmaven/"
 	}
 }
 

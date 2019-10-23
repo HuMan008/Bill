@@ -1,3 +1,7 @@
+#2.1.0_20191023-SNAPSHOT
+    修改属性keyOfHashCompareAuthenticationPathPrefix不能匹配多层路径的问题
+    修改HttpBodyStreamWrapperFilter因为keyOfHashCompareAuthenticationPathPrefix导致了误认为是跳过的问题
+
 ### 1.0.1
     重置版本号（之前的作废）
     换了新的仓库地址

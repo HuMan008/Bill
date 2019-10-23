@@ -9,6 +9,7 @@ public class BillHashCompareAuthHelper {
 
     public static  boolean isSkipBillHashURL(String url, BillProperties billProperties) {
         String prefix = billProperties.getKeyOfHashCompareAuthenticationPathPrefix();
+        prefix = prefix.replaceAll("\\*","");
         if (prefix != null && !url.startsWith(prefix)) {
             return true;
         }

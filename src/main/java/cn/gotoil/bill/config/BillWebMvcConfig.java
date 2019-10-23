@@ -69,7 +69,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     public FilterRegistrationBean filterRegistrationBean1() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(wrapperFilter);
-        registrationBean.addUrlPatterns(billFilterAndInterceptorUrlPatterns());
+        registrationBean.addUrlPatterns(billFilterAndInterceptorUrlPatterns(billProperties.getKeyOfHashCompareAuthenticationPathPrefix()));
         registrationBean.setOrder(99);
         return registrationBean;
     }
@@ -84,7 +84,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     }
 */
 
-    private String billFilterAndInterceptorUrlPatterns() {
+    /*private String billFilterAndInterceptorUrlPatterns() {
         String urlPatterns = billProperties.getKeyOfHashCompareAuthenticationPathPrefix();
         if (urlPatterns == null) {
             urlPatterns = "";
@@ -98,7 +98,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
             urlPatterns += "/*";
         }
         return urlPatterns;
-    }
+    }*/
 
     private String billFilterAndInterceptorUrlPatterns(String urlPatterns) {
         if (urlPatterns == null) {
@@ -108,9 +108,9 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
             return urlPatterns;
         }
         if (urlPatterns.endsWith("/")) {
-            urlPatterns += "*";
+            urlPatterns += "**";
         } else {
-            urlPatterns += "/*";
+            urlPatterns += "/**";
         }
         return urlPatterns;
     }
