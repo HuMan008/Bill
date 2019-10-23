@@ -50,8 +50,8 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(hashcompareAuthenticationInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns(billProperties.getKeyOfHashCompareAuthenticationPathPrefix()));
-        registry.addInterceptor(billWebAuthenticationInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns(secureProperties.getFilterUrl()));
+        registry.addInterceptor(hashcompareAuthenticationInterceptor()).addPathPatterns(billFilterAndInterceptorUrlPatterns()+"*");
+        registry.addInterceptor(billWebAuthenticationInterceptor()).addPathPatterns(secureProperties.getFilterUrl());
     }
 
     @Bean
@@ -69,7 +69,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     public FilterRegistrationBean filterRegistrationBean1() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(wrapperFilter);
-        registrationBean.addUrlPatterns(billFilterAndInterceptorUrlPatterns(billProperties.getKeyOfHashCompareAuthenticationPathPrefix()));
+        registrationBean.addUrlPatterns(billFilterAndInterceptorUrlPatterns());
         registrationBean.setOrder(99);
         return registrationBean;
     }
@@ -84,7 +84,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
     }
 */
 
-    /*private String billFilterAndInterceptorUrlPatterns() {
+    private String billFilterAndInterceptorUrlPatterns() {
         String urlPatterns = billProperties.getKeyOfHashCompareAuthenticationPathPrefix();
         if (urlPatterns == null) {
             urlPatterns = "";
@@ -98,9 +98,9 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
             urlPatterns += "/*";
         }
         return urlPatterns;
-    }*/
+    }
 
-    private String billFilterAndInterceptorUrlPatterns(String urlPatterns) {
+   /* private String billFilterAndInterceptorUrlPatterns(String urlPatterns) {
         if (urlPatterns == null) {
             urlPatterns = "";
         }
@@ -113,7 +113,7 @@ public class BillWebMvcConfig extends WebMvcConfigurationSupport {
             urlPatterns += "/**";
         }
         return urlPatterns;
-    }
+    }*/
 
 
     @Override
