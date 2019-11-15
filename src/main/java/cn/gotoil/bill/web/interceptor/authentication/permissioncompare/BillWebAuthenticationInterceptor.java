@@ -13,6 +13,7 @@ import cn.gotoil.bill.web.helper.TokenHelper;
 import cn.gotoil.bill.web.services.AdminUserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import io.jsonwebtoken.*;
 import org.apache.commons.lang3.StringUtils;
@@ -125,15 +126,18 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
         boolean vv = true;
         //如果没有写haspermission 也没写hasRole
         if(permissionHandler==null && roleHander ==null){
-            return true;
+            vv= true;
         }
         //hasrole里有货
         if(roleHander!=null){
-            vv=userRoleAuthValidate(request,roleHander,claims.get("permissionStr",String.class));
+            vv=userRoleAuthValidate(request,roleHander,claims.get("roleStr",String.class));
         }
         //hasPermission里有货
         if(permissionHandler!=null){
-            vv = vv&& userPermissionAuthValidate(request,permissionHandler,claims.get("roleStr",String.class));
+            vv = vv&& userPermissionAuthValidate(request,permissionHandler,claims.get("permissionStr",String.class));
+        }
+        if(!vv){
+            throw new BillException(CommonError.PERMISSION_ERROR);
         }
         return vv;
 
@@ -173,13 +177,13 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        Set<String> permissionSet = new HashSet<String>(Arrays.asList(StringUtils.split(",",permissionStr)));
 
 
         //按value配置
         if (StringUtils.isNotEmpty(permisisonHander.value())) {
-            return permissionSet.contains(permisisonHander.value());
+            return permissionStr.indexOf(permisisonHander.value())>-1;
         }
+        Set<String> permissionSet =new HashSet(Splitter.on(",").omitEmptyStrings().splitToList(permissionStr));
 
         //是数组的时候
         if (permisisonHander.values().length > 0) {
@@ -208,12 +212,12 @@ public class BillWebAuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        Set<String> roles = new HashSet<String>(Arrays.asList(StringUtils.split(",",roleStr)));
 
         //按value配置
         if (StringUtils.isNotEmpty(roleHander.value())) {
-            return roles.contains(roleHander.value());
+            return roleStr.indexOf(roleHander.value())>-1;
         }
+        Set<String> roles = new HashSet(Splitter.on(",").omitEmptyStrings().splitToList(roleStr));
 
         //是数组的时候
         if (roleHander.values().length > 0) {

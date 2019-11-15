@@ -1,5 +1,5 @@
 group 'cn.gotoil'
-version '2.1.0_201910231745-SNAPSHOT'
+version '2.1.0_201911141753-SNAPSHOT'
 
 buildscript {
 	ext {
@@ -28,7 +28,7 @@ compileJava.options.encoding = "UTF-8"
 //sourceSets.main.java.srcDirs = 'src/main/java'
 jar {
 	baseName = 'bill'
-	version = '2.1.0_201910231745-SNAPSHOT'
+	version = '2.1.0_201911141753-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8

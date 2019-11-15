@@ -1,3 +1,6 @@
+#2.1.0_201911141753-SNAPSHOT
+    修改token校验错误的问题
+
 #2.1.0_20191023-SNAPSHOT
     修改属性keyOfHashCompareAuthenticationPathPrefix不能匹配多层路径的问题
     修改HttpBodyStreamWrapperFilter因为keyOfHashCompareAuthenticationPathPrefix导致了误认为是跳过的问题
