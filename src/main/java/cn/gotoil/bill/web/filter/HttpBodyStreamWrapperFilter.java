@@ -25,8 +25,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.List;
-import java.util.regex.Pattern;
 
 
 @SuppressWarnings("unused")
@@ -46,6 +44,7 @@ public class HttpBodyStreamWrapperFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         if (!(request instanceof HttpServletRequest)) {
             logger.error("Request not instanceof HttpServletRequest");
         }

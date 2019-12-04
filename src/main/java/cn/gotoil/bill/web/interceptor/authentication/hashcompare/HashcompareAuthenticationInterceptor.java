@@ -22,6 +22,8 @@ import cn.gotoil.bill.web.annotation.launcher.AuthenticationLauncher;
 import cn.gotoil.bill.web.filter.BodyContentHttpServletRequestWrapper;
 import cn.gotoil.bill.web.interceptor.authentication.AuthenticationType;
 import cn.gotoil.bill.web.interceptor.authentication.BillHashCompareAuthHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -31,8 +33,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.regex.Pattern;
 
 
 @Component
@@ -49,6 +49,8 @@ public class HashcompareAuthenticationInterceptor implements HandlerInterceptor 
 
     private Method authKeyMethod = null;
 
+    private Logger logger = LoggerFactory.getLogger(HashcompareAuthenticationInterceptor.class);
+
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
@@ -64,7 +66,6 @@ public class HashcompareAuthenticationInterceptor implements HandlerInterceptor 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String uri = request.getRequestURI();
-
         /*
         boolean matchRequireAuth = false;
         for (String prefix : billProperties.getRequireAuthUrlPrefixs()) {
@@ -109,7 +110,7 @@ public class HashcompareAuthenticationInterceptor implements HandlerInterceptor 
                 new HashcompareAuthenticationInterceptorSignatureVerifier(request, body);
         verifier.setStringRedisTemplate(stringRedisTemplate);
         verifier.setAuthKeyMethod(authKeyMethod);
-        verifier.verify(billApiAuthenticationType, billProperties.getAllowDevSkipSignature());
+        verifier.verify(billApiAuthenticationType, billProperties);
 
         return true;
     }

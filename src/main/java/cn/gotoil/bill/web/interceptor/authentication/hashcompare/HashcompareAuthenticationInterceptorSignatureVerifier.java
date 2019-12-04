@@ -15,6 +15,7 @@
 package cn.gotoil.bill.web.interceptor.authentication.hashcompare;
 
 
+import cn.gotoil.bill.config.property.BillProperties;
 import cn.gotoil.bill.exception.*;
 import cn.gotoil.bill.tools.ObjectHelper;
 import cn.gotoil.bill.tools.encoder.Hmac;
@@ -55,6 +56,10 @@ public class HashcompareAuthenticationInterceptorSignatureVerifier {
     private String XU;
     private String XS;
     private String XR;
+
+
+    private static final String YES_VALUE = "YES";
+
 
 
     public HashcompareAuthenticationInterceptorSignatureVerifier(HttpServletRequest request, String jsonBody) {
@@ -118,12 +123,12 @@ public class HashcompareAuthenticationInterceptorSignatureVerifier {
         return true;
     }
 
-    public void verify(AuthenticationType billApiAuthenticationType, String allowDevSkip) throws Exception {
+    public void verify(AuthenticationType billApiAuthenticationType, BillProperties billProperties) throws Exception {
         if (billApiAuthenticationType == AuthenticationType.None) {
             return;
         }
 
-        boolean onlyIntegrity = billApiAuthenticationType == billApiAuthenticationType.Integrity;
+        boolean onlyIntegrity = billApiAuthenticationType == AuthenticationType.Integrity;
 
         boolean integrityCheckResult;
         if (onlyIntegrity) {
@@ -133,12 +138,16 @@ public class HashcompareAuthenticationInterceptorSignatureVerifier {
         }
 
         if (!integrityCheckResult) {
-            debug("");
+            if(YES_VALUE.equals(billProperties.getAllowAuthDebuger())){
+                debug("");
+            }
             throw new AuthenticationException(AuthenticationError.Entegrity);
         }
 
         if (Math.abs(current - XT) > 300) {
-            debug("Time Range Error");
+            if(YES_VALUE.equals(billProperties.getAllowAuthDebuger())){
+                debug("Time Range Error");
+            }
             throw new AuthenticationException(AuthenticationError.Timeout);
         }
 
@@ -206,9 +215,11 @@ public class HashcompareAuthenticationInterceptorSignatureVerifier {
             debuger.setPayload(payload.toString());
             debuger.setRandom(XR);
             logger.info("{}", debuger);
-            //request.setAttribute(AuthenticationDebuger.AuthenticationDebugerKey, debuger);
+            if (YES_VALUE.equals(billProperties.getAllowAuthDebuger())) {
+                request.setAttribute(AuthenticationDebuger.AuthenticationDebugerKey, debuger);
+            }
 
-            if ("YES".equals(allowDevSkip) && "YES".equals(request.getHeader("DevSkip"))) {
+            if (YES_VALUE.equals(billProperties.getAllowDevSkipSignature()) && YES_VALUE.equals(request.getHeader("DevSkip"))) {
                 logger.warn("DevSkiped");
             } else {
                 throw new AuthenticationException(AuthenticationError.SignatureError);

@@ -15,6 +15,8 @@ public class BillProperties {
 
     private String allowDevSkipSignature = "NO";
 
+    private String allowAuthDebuger = "NO";
+
     private String apiResponseAroundControllerPackagesExecution;
 
     private String keyOfHashCompareAuthenticationProviderClass;
@@ -103,5 +105,14 @@ public class BillProperties {
                 ", exceptBodyContentHttpServletRequestWrapperUrls=" + exceptBodyContentHttpServletRequestWrapperUrls +
                 ", ccc=" + ccc +
                 '}';
+    }
+
+
+    public String getAllowAuthDebuger() {
+        return allowAuthDebuger;
+    }
+
+    public void setAllowAuthDebuger(String allowAuthDebuger) {
+        this.allowAuthDebuger = allowAuthDebuger;
     }
 }
