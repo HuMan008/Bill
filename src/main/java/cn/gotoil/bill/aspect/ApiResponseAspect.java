@@ -15,61 +15,52 @@
 package cn.gotoil.bill.aspect;
 
 
-import cn.gotoil.bill.config.property.BillProperties;
 import cn.gotoil.bill.exception.CommonError;
-import cn.gotoil.bill.tools.ObjectHelper;
+
 import cn.gotoil.bill.web.message.BillApiResponse;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import javax.annotation.PostConstruct;
-import java.lang.reflect.Method;
-
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class ApiResponseAspect {
 
-    private static Logger logger = LoggerFactory.getLogger(ApiResponseAspect.class);
-
-
-    @Autowired
-    private BillProperties billProperties;
-
-
-    @PostConstruct
-    public void construct() {
-
-        if (billProperties == null) {
-            return;
-        }
-
-        String execution = billProperties.getApiResponseAroundControllerPackagesExecution();
-        if (StringUtils.isEmpty(execution)) {
-            return;
-        }
-
-
-        logger.info("ApiResponseAroundControllerPackagesExecution:{}", execution);
-        try {
-            Method method = ApiResponseAspect.class.getMethod("around", ProceedingJoinPoint.class);
-            Around around = method.getAnnotation(Around.class);
-            ObjectHelper.changeAnnotationValue(around, "value", execution);
-            if (around != null) {
-                logger.info("{}", around);
-            }
-        } catch (Exception ex) {
-            logger.error("ApiResponseAspect:{}", ex);
-        }
-    }
+    //    private static Logger logger = LoggerFactory.getLogger(ApiResponseAspect.class);
+    //
+    //
+    //    @Autowired
+    //    private BillProperties billProperties;
+    //
+    //    @Autowired
+    //    private DefaultListableBeanFactory beanFactory;
+    //
+    //    @PostConstruct
+    //    public void construct() {
+    //
+    //        if (billProperties == null) {
+    //            return;
+    //        }
+    //
+    //        String execution = billProperties.getApiResponseAroundControllerPackagesExecution();
+    //        if (StringUtils.isEmpty(execution)) {
+    //            return;
+    //        }
+    //
+    //
+    //        logger.info("ApiResponseAroundControllerPackagesExecution:{}", execution);
+    //        try {
+    //            Method method = ApiResponseAspect.class.getMethod("around", ProceedingJoinPoint.class);
+    //            Around around = method.getAnnotation(Around.class);
+    //            ObjectHelper.changeAnnotationValue(around, "value", execution);
+    //            if (around != null) {
+    //                logger.info("{}", around);
+    //            }
+    //        } catch (Exception ex) {
+    //            logger.error("ApiResponseAspect:{}", ex);
+    //        }
+    //    }
 
 
 
@@ -103,10 +94,10 @@ public class ApiResponseAspect {
         return builder.toString();
     }
 
-    @Around("execution(* cn.gotoil..*Action(..))")
-    public Object around(ProceedingJoinPoint point1) throws Throwable {
-        return aroundCall(point1);
-    }
+    //    @Around("execution(* cn.gotoil.bill.web.controller.v1..*.*Action(..))")
+    //    public Object around(ProceedingJoinPoint point) throws Throwable {
+    //        return aroundCall(point);
+    //    }
 
     protected Object aroundCall(ProceedingJoinPoint point) throws Throwable {
         Object[] args = point.getArgs();
